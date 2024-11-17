@@ -30,13 +30,34 @@ HEIGEN_AI_TOKEN = os.getenv("HEIGEN_AI_TOKEN")
 # For WEBHOOK
 BASE_WEBHOOK_URL = os.getenv("BASE_WEBHOOK_URL")
 WEBHOOK_PATH = f'/{TELEGRAM_TOKEN}'
-WEB_SERVER_HOST = os.getenv("WEB_SERVER_HOST")
-WEB_SERVER_PORT = int(os.getenv("WEB_SERVER_PORT"))
+WEB_SERVER_HOST = os.getenv("WEB_SERVER_HOST", "0.0.0.0")
+WEB_SERVER_PORT = int(os.getenv("WEB_SERVER_PORT", 8000))
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MEDIA_DIR = os.path.join(BASE_DIR, 'app', 'data', 'media')
 LOCALES_DIR = os.path.join(BASE_DIR, 'app', 'data', 'locales')
 
+# Initialize Flask and Telegram Bot
+app = Flask(__name__)
+bot = Bot(token=TELEGRAM_TOKEN)
+dispatcher = Dispatcher(bot, None, use_context=True)
+
+# Define a basic command handler (e.g., /start)
+def start(update, context):
+    update.message.reply_text("Hello! Your bot is running on Azure!")
+
+dispatcher.add_handler(CommandHandler("start", start))
+
+# Define webhook endpoint
+@app.route(WEBHOOK_PATH, methods=["POST"])
+def webhook():
+    data = request.get_json(force=True)
+    update = Update.de_json(data, bot)
+    dispatcher.process_update(update)
+    return "OK", 200
+
+if __name__ == "__main__":
+    app.run(host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
 
 DEBUG = os.getenv('DEBUG')

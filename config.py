@@ -10,7 +10,7 @@ REDIS_URL = os.getenv("REDIS_URL")
 
 # Telegram Bot
 TELEGRAM_CHANEL_ID = os.getenv("TELEGRAM_CHANEL_ID")
-TELEGRAM_CHANEL_URL = os.getenv("TELEGRAM_CHANEL_URL", 'https://t.me/maks_hero_live')  # https://t.me/maks_hero_live
+TELEGRAM_CHANEL_URL = os.getenv("TELEGRAM_CHANEL_URL", 'https://t.me/mersoft_ai_bot')  # https://t.me/maks_hero_live
 TELEGRAM_TOKEN = os.getenv("BOT_TOKEN")
 YKASSA_PAYMENT_TOKEN = os.getenv("YKASSA_PAYMENT_TOKEN")
 STRIPE_PAYMENT_TOKEN = os.getenv("STRIPE_PAYMENT_TOKEN")
